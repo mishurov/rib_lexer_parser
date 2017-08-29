@@ -1,0 +1,59 @@
+Format 320 240 1
+Display "primitives.pbm" "file" "rgb"
+
+Option "verbosity" 1
+
+PixelSamples 2 2
+PixelFilter "box" 2 2
+ShadingRate 0.5
+Projection "perspective" "fov" 20
+
+WorldBegin
+  Translate 0 0 6
+
+  LightSource "distantlight" 2 "color" [0.5 0.5 1] "intensity" 1.0 "from" [-4 -4 -2] "to" [0 0 0]
+  LightSource "distantlight" 2 "color" [1 0.5 0.5] "intensity" 1.0 "from" [4 4 -2] "to" [0 0 0]
+
+  Color [1 1 1]
+  Opacity [1 1 1]
+  Sides 2
+  Surface "checker" "Kd" 0.8 "Ks" 1 "darkcolour" [1 0.3 0.3] "sfreq" 10 "tfreq" 10 "roughness" 0.1
+
+  TransformBegin
+    Sphere 0.4 -0.4 0.4 360
+  TransformEnd
+
+  TransformBegin
+    Translate -1.2 1.2 0
+    Rotate 90 1 0 0
+    Cylinder 0.4 -0.6 0.2 360
+  TransformEnd
+
+  TransformBegin
+    Translate 0 1.2 0
+    Disk 0 0.4 360
+  TransformEnd
+
+  TransformBegin
+    Translate 1.2 0.9 0
+    Rotate -90 1 0 0
+    Cone 0.9 0.4 360
+  TransformEnd
+
+  TransformBegin
+    Translate 1.2 0 0
+    Torus 0.4 0.15 00 360 360
+  TransformEnd
+
+  TransformBegin
+    Translate -1.2 0 0
+    Rotate -90 1 0 0
+    Hyperboloid -0.4 -0 -0.4   0 -0.4 0.4   360
+  TransformEnd
+
+  TransformBegin
+    Translate 0 -1.6 0
+    Rotate -90 1 0 0
+    Paraboloid 0.4 0 0.8 360
+  TransformEnd
+WorldEnd

@@ -1,0 +1,12 @@
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.plist
+*.yy.cc
+*.tab.*
+*.hh
+*.swp
+*.so
+*.a
+rib_parser
