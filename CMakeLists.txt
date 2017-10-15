@@ -50,8 +50,8 @@ set(_PROJECT ${PROJECT_NAME})
 
 include_directories(${_MAYA_LOCATION}/${MAYA_INC_SUFFIX}
                     ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS}
-                    "${CMAKE_CURRENT_BINARY_DIR}"
-                    "${CMAKE_CURRENT_BINARY_DIR}/utils")
+                    "${CMAKE_CURRENT_SOURCE_DIR}"
+                    "${CMAKE_CURRENT_BINARY_DIR}")
 
 link_directories(${_MAYA_LOCATION}/${MAYA_LIB_SUFFIX})
 
@@ -68,10 +68,13 @@ ADD_FLEX_BISON_DEPENDENCY(rib_lexer rib_parser)
 set(MAYA_SOURCE_FILES
     "maya/rib_locator.cc"
     "maya/rib_locator_main.cc"
-    "utils/primitives.cc"
+    "utils/maya_primitives.cc"
 )
 
 add_library(${_PROJECT} SHARED ${MAYA_SOURCE_FILES})
+
+set_target_properties(${_PROJECT} PROPERTIES COMPILE_FLAGS
+                      "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set_target_properties(${_PROJECT} PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 set_target_properties(${_PROJECT} PROPERTIES CLEAN_DIRECT_OUTPUT 1)
@@ -99,11 +102,13 @@ target_include_directories(rib_driver
     PRIVATE . ${CMAKE_CURRENT_BINARY_DIR}/parser)
 
 set_target_properties(rib_driver PROPERTIES COMPILE_FLAGS
-                      "${CMAKE_CXX_FLAGS} -fPIC")
+                      "${CMAKE_CXX_FLAGS} -fPIC -std=c++11")
 
 target_link_libraries(${_PROJECT} rib_driver ${MAYA_LIBRARIES})
 
 add_executable(rib_parser main.cc)
+set_target_properties(rib_parser PROPERTIES COMPILE_FLAGS
+                      "${CMAKE_CXX_FLAGS} -fPIC -std=c++11")
 target_include_directories(rib_parser PRIVATE . ${CMAKE_CURRENT_BINARY_DIR}/parser)
 target_link_libraries(rib_parser rib_driver)
 

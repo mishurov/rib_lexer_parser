@@ -32,7 +32,7 @@
 %parse-param { Driver &driver }
 
 %code {
-    #include "rib_driver.h"
+    #include "parser/rib_driver.h"
 
     #undef yylex
     #define yylex lexer.yylex

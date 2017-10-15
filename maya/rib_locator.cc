@@ -14,8 +14,10 @@
  * limitations under the License.
  * ************************************************************************/
 
-#include "rib_locator.h"
+#include "maya/rib_locator.h"
+#include "utils/maya_primitives.h"
 #include "utils/primitives.h"
+
 
 MTypeId RibLocator::id(kRibLocatorID);
 MObject RibLocator::file_;
@@ -178,9 +180,9 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 		{
 			rib::RotateNode *n = (rib::RotateNode *) node;
 			const double rotation[] = {
-				radians(n->r * n->x),
-				radians(n->r * n->y),
-				radians(n->r * n->z)
+				quadrics::radians(n->r * n->x),
+				quadrics::radians(n->r * n->y),
+				quadrics::radians(n->r * n->z)
 			};
 			basis_.addRotation(
 				rotation,

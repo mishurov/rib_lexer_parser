@@ -15,7 +15,7 @@
  * ************************************************************************/
 
 %{
-#include "rib_lexer.h"
+#include "parser/rib_lexer.h"
 using token = rib::Parser::token;
 
 #define yyterminate() return(token::END)

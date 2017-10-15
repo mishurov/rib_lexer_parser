@@ -14,28 +14,157 @@
  * limitations under the License.
  * ************************************************************************/
 
+#ifndef RIBPARSER_PRIMITIVES_H_
+#define RIBPARSER_PRIMITIVES_H_
+
 #include <math.h>
-#include <maya/MPointArray.h>
 
-float radians(float d);
+namespace quadrics {
 
-MPointArray SpherePoints(int numu, int numv, float radius, float zmin,
-				float zmax, float thetamax);
+inline float radians(float d) { return d * M_PI / 180; }
 
-MPointArray ConePoints(int numu, int numv, float height, float radius,
-							float thetamax);
+inline float degrees(float r) { return r * 180/ M_PI; }
 
-MPointArray CylinderPoints(int numu, int numv, float radius, float zmin,
-				float zmax, float thetamax);
-				
-MPointArray HyperboloidPoints(int numu, int numv, float x1, float y1, float z1,
-				float x2, float y2, float z2, float thetamax);
+template<typename T>
+T SpherePoint(float u, float v, float *args) {
+	float radius = args[0];
+	float zmin = args[1];
+	float zmax = args[2];
+	float thetamax = args[3];
 
-MPointArray ParaboloidPoints(int numu, int numv, float rmax, float zmin,
-				float zmax, float thetamax);
+	float x, y, z, theta, phi, phimin, phimax;
 
-MPointArray DiskPoints(int numu, int numv, float height, float radius,
-							float thetamax);
+	thetamax = radians(thetamax);
+	phimin = zmin > -radius ? asin(zmin / radius) : radians(-90);
+	phimax = zmax < radius ? asin(zmax / radius) : radians(90);
+	phi = phimin + v * (phimax - phimin);
+	theta = u * thetamax;
+	x = radius * cos(theta) * cos(phi);
+	y = radius * sin(theta) * cos(phi);
+	z = radius * sin(phi);
+	return T(x, y, z);
+}
 
-MPointArray TorusPoints(int numu, int numv, float rmajor, float rminor,
-				float phimin, float phimax, float thetamax);
+template<typename T>
+T ConePoint(float u, float v, float *args) {
+	float height = args[0];
+	float radius = args[1];
+	float thetamax = args[2];
+
+	float x, y, z, theta;
+
+	thetamax = radians(thetamax);
+	theta = u * thetamax;
+
+	x = radius * (1 - v) * cos(theta);
+	y = radius * (1 - v) * sin(theta);
+	z = v * height;
+	return T(x, y, z);
+}
+
+template<typename T>
+T CylinderPoint(float u, float v, float *args) {
+	float radius = args[0];
+	float zmin = args[1];
+	float zmax = args[2];
+	float thetamax = args[3];
+
+	float x, y, z, theta;
+
+	thetamax = radians(thetamax);
+	theta = u * thetamax;
+	x = radius * cos(theta);
+	y = radius * sin(theta);
+	z = zmin + v * (zmax - zmin);
+	return T(x, y, z);
+}
+
+template<typename T>
+T HyperboloidPoint(float u, float v, float *args) {
+	float x1 = args[0];
+	float y1 = args[1];
+	float z1 = args[2];
+	float x2 = args[3];
+	float y2 = args[4];
+	float z2 = args[5];
+	float thetamax = args[6];
+
+	float x, y, z, theta, xr, yr, zr;
+
+	thetamax = radians(thetamax);
+	theta = u * thetamax;
+	
+	xr = (1 - v) * x1 + v * x2;
+	yr = (1 - v) * y1 + v * y2;
+	zr = (1 - v) * z1 + v * z2;
+
+	x = xr * cos(theta) - yr * sin(theta);
+	y = xr * sin(theta) + yr * cos(theta);
+	z = zr;
+	return T(x, y, z);
+}
+
+template<typename T>
+T ParaboloidPoint(float u, float v, float *args) {
+	float rmax = args[0];
+	float zmin = args[1];
+	float zmax = args[2];
+	float thetamax = args[3];
+
+	float x, y, z, theta, r;
+
+	thetamax = radians(thetamax);
+	theta = u * thetamax;
+	z = zmin + v * (zmax - zmin);
+	r = rmax * sqrt(z / zmax);
+
+	x = r * cos(theta);
+	y = r * sin(theta);
+
+	return T(x, y, z);
+}
+
+template<typename T>
+T DiskPoint(float u, float v, float *args) {
+	float height = args[0];
+	float radius = args[1];
+	float thetamax = args[2];
+
+	float x, y, z, theta;
+
+	thetamax = radians(thetamax);
+	theta = u * thetamax;
+
+	x = radius * (1 - v) * cos(theta);
+	y = radius * (1 - v) * sin(theta);
+	z = height;
+	return T(x, y, z);
+}
+
+template<typename T>
+T TorusPoint(float u, float v, float *args) {
+	float rmajor = args[0];
+	float rminor = args[1];
+	float phimin = args[2];
+	float phimax = args[3];
+	float thetamax = args[4];
+
+	float x, y, z, theta, phi, r;
+
+	thetamax = radians(thetamax);
+	phimin = radians(phimin);
+	phimax = radians(phimax);
+	theta = u * thetamax;
+	phi = phimin + v * (phimax - phimin);
+	r = rminor * cos(phi);
+
+	z = rminor * sin(phi);
+	x = (rmajor + r) * cos(theta);
+	y = (rmajor + r) * sin(theta);
+
+	return T(x, y, z);
+}
+
+} // namespace quadrics
+
+#endif  // RIBPARSER_PRIMITIVES_H_

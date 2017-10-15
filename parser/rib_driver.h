@@ -20,7 +20,7 @@
 #include <istream>
 #include <vector>
 #include <map>
-#include "rib_lexer.h"
+#include "parser/rib_lexer.h"
 #include "rib_parser.tab.hh"
 
 namespace rib {
