@@ -54,6 +54,15 @@ void dfs(const rib::Node *node) {
 	case rib::CONE:
 		printf("Cone node\n");
 		break;
+	case rib::PATTERN:
+		printf("Pattern node\n");
+		break;
+	case rib::BXDF:
+		printf("Bxdf node\n");
+		break;
+	case rib::LIGHT:
+		printf("Light node\n");
+		break;
 	case rib::POINTS_GENERAL_POLYGONS:
 		printf("Polygons node\n");
 		rib::PointsGeneralPolygonsNode *pnode =

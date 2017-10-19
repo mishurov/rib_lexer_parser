@@ -279,6 +279,14 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 			drawPoints(drawManager, points);
 		}
 		break;
+	case rib::JOINT:
+		break;
+	case rib::PATTERN:
+		break;
+	case rib::BXDF:
+		break;
+	case rib::LIGHT:
+		break;
 	}
 }
 

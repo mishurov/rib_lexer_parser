@@ -129,7 +129,7 @@ public:
 	{
 		MGlobal::displayInfo("RibLocatorDrawOverride: " + message);
 		fprintf(stderr, "RibLocatorDrawOverride: ");
-		fprintf(stderr, message.asChar());
+		fprintf(stderr, "%s", message.asChar());
 		fprintf(stderr, "\n");
 	}
 

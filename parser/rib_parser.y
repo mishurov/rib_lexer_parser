@@ -91,6 +91,9 @@ https://www.gnu.org/software/bison/manual/html_node/_0025define-Summary.html
 
 %token CONCAT_TRANSFORM
 %token POINTS_GENERAL_POLYGONS
+%token PATTERN
+%token BXDF
+%token LIGHT
 
 %type <float> float
 %type <std::vector<float>*> float_list float_array
@@ -138,6 +141,9 @@ rib_item
     | attribute
     | contcat_transform
     | points_general_polygons
+    | pattern
+    | bxdf
+    | light
     ;
 
 hyperboloid
@@ -181,6 +187,57 @@ points_general_polygons
             delete $2;
             delete $3;
             delete $4;
+        }
+    ;
+
+pattern
+    : pattern STRING float_array
+        {
+            driver.addPatternFlParam($2, *$3);
+            delete $3;
+        }
+    | pattern STRING string_array
+        {
+            driver.addPatternStrParam($2, *$3);
+            delete $3;
+        }
+    | PATTERN STRING STRING
+        {
+            driver.addPattern($2, $3);
+        }
+    ;
+
+bxdf
+    : bxdf STRING float_array
+        {
+            driver.addBxdfFlParam($2, *$3);
+            delete $3;
+        }
+    | bxdf STRING string_array
+        {
+            driver.addBxdfStrParam($2, *$3);
+            delete $3;
+        }
+    | BXDF STRING STRING
+        {
+            driver.addBxdf($2, $3);
+        }
+    ;
+
+light
+    : light STRING float_array
+        {
+            driver.addLightFlParam($2, *$3);
+            delete $3;
+        }
+    | light STRING string_array
+        {
+            driver.addLightStrParam($2, *$3);
+            delete $3;
+        }
+    | LIGHT STRING STRING
+        {
+            driver.addLight($2, $3);
         }
     ;
 

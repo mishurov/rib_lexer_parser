@@ -191,3 +191,80 @@ void Driver::addPGPparam(const std::string &key, std::vector<float> value) {
 	}
 }
 
+void PatternNode::addStringParam(const std::string &key,
+				std::vector<std::string> value) {
+	string_params.insert({key, value});
+}
+
+void PatternNode::addFloatParam(const std::string &key,
+				std::vector<float> value) {
+	float_params.insert({key, value});
+}
+
+void Driver::addPattern(std::string item_type, std::string name)
+{
+	PatternNode *node = new PatternNode(current, item_type, name);
+	current->children.push_back(node);
+}
+
+void Driver::addBxdf(std::string item_type, std::string name)
+{
+	BxdfNode *node = new BxdfNode(current, item_type, name);
+	current->children.push_back(node);
+}
+
+void Driver::addLight(std::string item_type, std::string name)
+{
+	PatternNode *node = new LightNode(current, item_type, name);
+	current->children.push_back(node);
+}
+
+
+void Driver::addPatternStrParam(const std::string &key,
+				std::vector<std::string> value) {
+	if (current->children.back()->type == PATTERN) {
+		PatternNode *node = (PatternNode *) current->children.back();
+		node->addStringParam(key, value);
+	}
+}
+
+void Driver::addPatternFlParam(const std::string &key,
+				std::vector<float> value) {
+	if (current->children.back()->type == PATTERN) {
+		PatternNode *node = (PatternNode *) current->children.back();
+		node->addFloatParam(key, value);
+	}
+}
+
+void Driver::addBxdfStrParam(const std::string &key,
+				std::vector<std::string> value) {
+	if (current->children.back()->type == BXDF) {
+		BxdfNode *node = (BxdfNode *) current->children.back();
+		node->addStringParam(key, value);
+	}
+}
+
+void Driver::addBxdfFlParam(const std::string &key,
+				std::vector<float> value) {
+	if (current->children.back()->type == BXDF) {
+		PatternNode *node = (BxdfNode *) current->children.back();
+		node->addFloatParam(key, value);
+	}
+}
+
+void Driver::addLightStrParam(const std::string &key,
+				std::vector<std::string> value) {
+	if (current->children.back()->type == LIGHT) {
+		LightNode *node = (LightNode *) current->children.back();
+		node->addStringParam(key, value);
+	}
+}
+
+void Driver::addLightFlParam(const std::string &key,
+				std::vector<float> value) {
+	if (current->children.back()->type == LIGHT) {
+		LightNode *node = (LightNode *) current->children.back();
+		node->addFloatParam(key, value);
+	}
+}
+

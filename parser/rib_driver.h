@@ -43,7 +43,10 @@ enum NodeType {
 	SPHERE,
 	DISK,
 	CONE,
-	POINTS_GENERAL_POLYGONS
+	POINTS_GENERAL_POLYGONS,
+	PATTERN,
+	BXDF,
+	LIGHT
 };
 
 class Node {
@@ -211,6 +214,44 @@ public:
 	~PointsGeneralPolygonsNode() {}
 };
 
+class PatternNode : public Node {
+public:
+	std::string item_type;
+	std::string name;
+	std::map<std::string,std::vector<std::string>> string_params;
+	std::map<std::string,std::vector<float>> float_params;
+public:
+	PatternNode(Node *parent,
+			std::string item_type,
+			std::string name)
+	: Node(parent), item_type(item_type), name(name)
+			{ type = PATTERN; }
+	~PatternNode() {}
+	void addStringParam(const std::string &key,
+					std::vector<std::string> value);
+	void addFloatParam(const std::string &key,std::vector<float> value);
+};
+
+class BxdfNode : public PatternNode {
+public:
+	BxdfNode(Node *parent,
+			std::string item_type,
+			std::string name)
+	: PatternNode(parent, item_type, name)
+			{ type = BXDF; }
+	~BxdfNode() {}
+};
+
+class LightNode : public PatternNode {
+public:
+	LightNode(Node *parent,
+			std::string item_type,
+			std::string name)
+	: PatternNode(parent, item_type, name)
+			{ type = LIGHT; }
+	~LightNode() {}
+};
+
 class Driver {
 public:
 	Parser *parser = nullptr;
@@ -252,6 +293,22 @@ public:
 	void addPGP(std::vector<int> nloops, std::vector<int> nvertices,
 			std::vector<int> vertices);
 	void addPGPparam(const std::string &key, std::vector<float> value);
+	// rendering
+	void addPattern(std::string item_type, std::string name);
+	void addPatternFlParam(const std::string &key,
+						std::vector<float> value);
+	void addPatternStrParam(const std::string &key,
+						std::vector<std::string> value);
+	void addBxdf(std::string type, std::string name);
+	void addBxdfFlParam(const std::string &key,
+						std::vector<float> value);
+	void addBxdfStrParam(const std::string &key,
+						std::vector<std::string> value);
+	void addLight(std::string type, std::string name);
+	void addLightFlParam(const std::string &key,
+						std::vector<float> value);
+	void addLightStrParam(const std::string &key,
+						std::vector<std::string> value);
 };
 
 } /* namespace rib */

@@ -73,6 +73,10 @@ Disk { return(token::DISK); }
 Cone { return(token::CONE); }
 ConcatTransform { return(token::CONCAT_TRANSFORM); }
 PointsGeneralPolygons { return(token::POINTS_GENERAL_POLYGONS); }
+Pattern { return(token::PATTERN); }
+Bxdf { return(token::BXDF); }
+Light { return(token::LIGHT); }
+
 
 #                   { BEGIN(SHARP_COMMENT); }
 <SHARP_COMMENT>\n   { BEGIN(INITIAL); return(token::COMMENT); }
