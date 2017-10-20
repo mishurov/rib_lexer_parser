@@ -26,27 +26,27 @@
 namespace rib {
 
 enum ParseError {
-	BAD_FILE,
-	PARSE_FAILED,
-	SUCCESS
+	kBadFile,
+	kParseFailed,
+	kSuccess
 };
 
 enum NodeType {
-	JOINT,
-	TRANSLATE,
-	ROTATE,
-	SCALE,
-	HYPERBOLOID,
-	PARABOLOID,
-	TORUS,
-	CYLINDER,
-	SPHERE,
-	DISK,
-	CONE,
-	POINTS_GENERAL_POLYGONS,
-	PATTERN,
-	BXDF,
-	LIGHT
+	kJoint,
+	kTranslate,
+	kRotate,
+	kScale,
+	kHyperboloid,
+	kParaboloid,
+	kTorus,
+	kCylinder,
+	kSphere,
+	kDisk,
+	kCone,
+	kPointsGeneralPolygons,
+	kPattern,
+	kBxdf,
+	kLight
 };
 
 class Node {
@@ -57,7 +57,7 @@ public:
 
 public:
 	Node() = default;
-	Node(Node *parent) : parent(parent) { type = JOINT; }
+	Node(Node *parent) : parent(parent) { type = kJoint; }
 	~Node() {}
 };
 
@@ -68,7 +68,7 @@ public:
 	float z;
 public:
 	TranslateNode(Node *parent, float x, float y, float z)
-	: Node(parent), x(x), y(y), z(z) { type = TRANSLATE; }
+	: Node(parent), x(x), y(y), z(z) { type = kTranslate; }
 	~TranslateNode() {}
 };
 
@@ -80,7 +80,7 @@ public:
 	int z;
 public:
 	RotateNode(Node *parent, int r, int x, int y, int z)
-	: Node(parent), r(r), x(x), y(y), z(z) { type = ROTATE; }
+	: Node(parent), r(r), x(x), y(y), z(z) { type = kRotate; }
 	~RotateNode() {}
 };
 
@@ -91,7 +91,7 @@ public:
 	float z;
 public:
 	ScaleNode(Node *parent, float x, float y, float z)
-	: Node(parent), x(x), y(y), z(z) { type = SCALE; }
+	: Node(parent), x(x), y(y), z(z) { type = kScale; }
 	~ScaleNode() {}
 };
 
@@ -111,7 +111,7 @@ public:
 			float x2, float y2, float z2, float thetamax)
 	: Node(parent), x1(x1), y1(y1), z1(z1),
 			x2(x2), y2(y2), z2(z2), thetamax(thetamax)
-		{ type = HYPERBOLOID; }
+		{ type = kHyperboloid; }
 	~HyperboloidNode() {}
 };
 
@@ -125,7 +125,7 @@ public:
 	ParaboloidNode(Node *parent, float rmax, float zmin,
 					float zmax, float thetamax)
 	: Node(parent), rmax(rmax), zmin(zmin), zmax(zmax),
-				thetamax(thetamax) { type = PARABOLOID; }
+				thetamax(thetamax) { type = kParaboloid; }
 	~ParaboloidNode() {}
 };
 
@@ -141,7 +141,7 @@ public:
 				float phimin, float phimax, float thetamax)
 	: Node(parent), rmajor(rmajor), rminor(rminor),
 			phimin(phimin), phimax(phimax), thetamax(thetamax)
-		{ type = TORUS; }
+		{ type = kTorus; }
 	~TorusNode() {}
 };
 
@@ -157,7 +157,7 @@ public:
 				float zmax, float thetamax)
 	: Node(parent), radius(radius), zmin(zmin),
 			zmax(zmax), thetamax(thetamax)
-		{ type = CYLINDER; }
+		{ type = kCylinder; }
 	~CylinderNode() {}
 };
 
@@ -172,7 +172,7 @@ public:
 				float zmax, float thetamax)
 	: Node(parent), radius(radius), zmin(zmin),
 			zmax(zmax), thetamax(thetamax)
-		{ type = SPHERE; }
+		{ type = kSphere; }
 	~SphereNode() {}
 };
 
@@ -184,7 +184,7 @@ public:
 public:
 	DiskNode(Node *parent, float height, float radius, float thetamax)
 	: Node(parent), height(height), radius(radius), thetamax(thetamax)
-		{ type = DISK; }
+		{ type = kDisk; }
 	~DiskNode() {}
 };
 
@@ -196,7 +196,7 @@ public:
 public:
 	ConeNode(Node *parent, float height, float radius, float thetamax)
 	: Node(parent), height(height), radius(radius), thetamax(thetamax)
-		{ type = CONE; }
+		{ type = kCone; }
 	~ConeNode() {}
 };
 
@@ -210,7 +210,7 @@ public:
 	PointsGeneralPolygonsNode(Node *parent, std::vector<int> nloops,
 			std::vector<int> nvertices, std::vector<int> vertices)
 	: Node(parent), nloops(nloops), nvertices(nvertices),
-			vertices(vertices) { type = POINTS_GENERAL_POLYGONS; }
+			vertices(vertices) { type = kPointsGeneralPolygons; }
 	~PointsGeneralPolygonsNode() {}
 };
 
@@ -225,7 +225,7 @@ public:
 			std::string item_type,
 			std::string name)
 	: Node(parent), item_type(item_type), name(name)
-			{ type = PATTERN; }
+			{ type = kPattern; }
 	~PatternNode() {}
 	void addStringParam(const std::string &key,
 					std::vector<std::string> value);
@@ -238,7 +238,7 @@ public:
 			std::string item_type,
 			std::string name)
 	: PatternNode(parent, item_type, name)
-			{ type = BXDF; }
+			{ type = kBxdf; }
 	~BxdfNode() {}
 };
 
@@ -248,7 +248,7 @@ public:
 			std::string item_type,
 			std::string name)
 	: PatternNode(parent, item_type, name)
-			{ type = LIGHT; }
+			{ type = kLight; }
 	~LightNode() {}
 };
 

@@ -74,15 +74,15 @@ void RibLocator::updateRibTree(MPlug &plug) {
 	ret = driver_.parseMaya(file.asChar(), &node);
 
 	switch(ret) {
-	case rib::BAD_FILE:
+	case rib::kBadFile:
 		error_msg = "Bad file";
 		MGlobal::displayError(error_msg);
 		break;
-	case rib::PARSE_FAILED:
+	case rib::kParseFailed:
 		error_msg = "Parse failed";
 		MGlobal::displayError(error_msg);
 		break;
-	case rib::SUCCESS:
+	case rib::kSuccess:
 		driver_.clean(&root_);
 		root_ = node;
 		break;
@@ -169,14 +169,14 @@ void RibLocatorDrawOverride::drawPoints(MHWRender::MUIDrawManager& drawManager,
 void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 					rib::Node *node) {
 	switch (node->type) {
-	case rib::TRANSLATE:
+	case rib::kTranslate:
 		{
 			rib::TranslateNode *n = (rib::TranslateNode *) node;
 			MVector translation(n->x, n->y, n->z);
 			basis_.addTranslation(translation, MSpace::kObject);
 		}
 		break;
-	case rib::ROTATE:
+	case rib::kRotate:
 		{
 			rib::RotateNode *n = (rib::RotateNode *) node;
 			const double rotation[] = {
@@ -191,14 +191,14 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 			);
 		}
 		break;
-	case rib::SCALE:
+	case rib::kScale:
 		{
 			rib::ScaleNode *n = (rib::ScaleNode *) node;
 			const double scale[] = {n->x, n->y, n->z};
 			basis_.addScale(scale, MSpace::kObject);
 		}
 		break;
-	case rib::SPHERE:
+	case rib::kSphere:
 		{
 			rib::SphereNode *n = (rib::SphereNode *) node;
 			MPointArray points = SpherePoints(
@@ -208,7 +208,7 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 			drawPoints(drawManager, points);
 		}
 		break;
-	case rib::CONE:
+	case rib::kCone:
 		{
 			rib::ConeNode *n = (rib::ConeNode *) node;
 			MPointArray points = ConePoints(
@@ -217,7 +217,7 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 			drawPoints(drawManager, points);
 		}
 		break;
-	case rib::CYLINDER:
+	case rib::kCylinder:
 		{
 			rib::CylinderNode *n = (rib::CylinderNode *) node;
 			MPointArray points = CylinderPoints(
@@ -226,7 +226,7 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 			drawPoints(drawManager, points);
 		}
 		break;
-	case rib::HYPERBOLOID:
+	case rib::kHyperboloid:
 		{
 			rib::HyperboloidNode *n = (rib::HyperboloidNode *) node;
 			MPointArray points = HyperboloidPoints(
@@ -236,7 +236,7 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 			drawPoints(drawManager, points);
 		}
 		break;
-	case rib::PARABOLOID:
+	case rib::kParaboloid:
 		{
 			rib::ParaboloidNode *n = (rib::ParaboloidNode *) node;
 			MPointArray points = ParaboloidPoints(
@@ -245,7 +245,7 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 			drawPoints(drawManager, points);
 		}
 		break;
-	case rib::DISK:
+	case rib::kDisk:
 		{
 			rib::DiskNode *n = (rib::DiskNode *) node;
 			MPointArray points = DiskPoints(
@@ -254,7 +254,7 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 			drawPoints(drawManager, points);
 		}
 		break;
-	case rib::TORUS:
+	case rib::kTorus:
 		{
 			rib::TorusNode *n = (rib::TorusNode *) node;
 			MPointArray points = TorusPoints(
@@ -264,7 +264,7 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 			drawPoints(drawManager, points);
 		}
 		break;
-	case rib::POINTS_GENERAL_POLYGONS:
+	case rib::kPointsGeneralPolygons:
 		{
 			rib::PointsGeneralPolygonsNode *n =
 				(rib::PointsGeneralPolygonsNode *) node;
@@ -279,13 +279,13 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 			drawPoints(drawManager, points);
 		}
 		break;
-	case rib::JOINT:
+	case rib::kJoint:
 		break;
-	case rib::PATTERN:
+	case rib::kPattern:
 		break;
-	case rib::BXDF:
+	case rib::kBxdf:
 		break;
-	case rib::LIGHT:
+	case rib::kLight:
 		break;
 	}
 }

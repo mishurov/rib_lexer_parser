@@ -55,7 +55,7 @@ ParseError Driver::parseMaya(const char * const filename, Node *node)
 {
 	std::ifstream in_file(filename);
 	if (!in_file.good()) {
-		return BAD_FILE;
+		return kBadFile;
 	}
 
 	delete lexer ;
@@ -68,10 +68,10 @@ ParseError Driver::parseMaya(const char * const filename, Node *node)
 	
 	const int accept = 0;
 	if (parser->parse() != accept) {
-		return PARSE_FAILED;
+		return kParseFailed;
 	}
 	
-	return SUCCESS;
+	return kSuccess;
 }
 
 void Driver::clean(Node *node)
@@ -184,7 +184,7 @@ void Driver::addPGP(std::vector<int> nloops, std::vector<int> nvertices,
 }
 
 void Driver::addPGPparam(const std::string &key, std::vector<float> value) {
-	if (current->children.back()->type == POINTS_GENERAL_POLYGONS) {
+	if (current->children.back()->type == kPointsGeneralPolygons) {
 		PointsGeneralPolygonsNode *node =
 			(PointsGeneralPolygonsNode *) current->children.back();
 		node->params.insert({key, value});
@@ -222,7 +222,7 @@ void Driver::addLight(std::string item_type, std::string name)
 
 void Driver::addPatternStrParam(const std::string &key,
 				std::vector<std::string> value) {
-	if (current->children.back()->type == PATTERN) {
+	if (current->children.back()->type == kPattern) {
 		PatternNode *node = (PatternNode *) current->children.back();
 		node->addStringParam(key, value);
 	}
@@ -230,7 +230,7 @@ void Driver::addPatternStrParam(const std::string &key,
 
 void Driver::addPatternFlParam(const std::string &key,
 				std::vector<float> value) {
-	if (current->children.back()->type == PATTERN) {
+	if (current->children.back()->type == kPattern) {
 		PatternNode *node = (PatternNode *) current->children.back();
 		node->addFloatParam(key, value);
 	}
@@ -238,7 +238,7 @@ void Driver::addPatternFlParam(const std::string &key,
 
 void Driver::addBxdfStrParam(const std::string &key,
 				std::vector<std::string> value) {
-	if (current->children.back()->type == BXDF) {
+	if (current->children.back()->type == kBxdf) {
 		BxdfNode *node = (BxdfNode *) current->children.back();
 		node->addStringParam(key, value);
 	}
@@ -246,7 +246,7 @@ void Driver::addBxdfStrParam(const std::string &key,
 
 void Driver::addBxdfFlParam(const std::string &key,
 				std::vector<float> value) {
-	if (current->children.back()->type == BXDF) {
+	if (current->children.back()->type == kBxdf) {
 		PatternNode *node = (BxdfNode *) current->children.back();
 		node->addFloatParam(key, value);
 	}
@@ -254,7 +254,7 @@ void Driver::addBxdfFlParam(const std::string &key,
 
 void Driver::addLightStrParam(const std::string &key,
 				std::vector<std::string> value) {
-	if (current->children.back()->type == LIGHT) {
+	if (current->children.back()->type == kLight) {
 		LightNode *node = (LightNode *) current->children.back();
 		node->addStringParam(key, value);
 	}
@@ -262,7 +262,7 @@ void Driver::addLightStrParam(const std::string &key,
 
 void Driver::addLightFlParam(const std::string &key,
 				std::vector<float> value) {
-	if (current->children.back()->type == LIGHT) {
+	if (current->children.back()->type == kLight) {
 		LightNode *node = (LightNode *) current->children.back();
 		node->addFloatParam(key, value);
 	}

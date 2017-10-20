@@ -21,49 +21,49 @@
 
 void dfs(const rib::Node *node) {
 	switch (node->type) {
-	case rib::JOINT:
+	case rib::kJoint:
 		printf("Joint node\n");
 		break;
-	case rib::TRANSLATE:
+	case rib::kTranslate:
 		printf("Translate node\n");
 		break;
-	case rib::ROTATE:
+	case rib::kRotate:
 		printf("Rotate node\n");
 		break;
-	case rib::SCALE:
+	case rib::kScale:
 		printf("Scale node\n");
 		break;
-	case rib::HYPERBOLOID:
+	case rib::kHyperboloid:
 		printf("Hyperboloid node\n");
 		break;
-	case rib::PARABOLOID:
+	case rib::kParaboloid:
 		printf("Paraboloid node\n");
 		break;
-	case rib::TORUS:
+	case rib::kTorus:
 		printf("Torus node\n");
 		break;
-	case rib::CYLINDER:
+	case rib::kCylinder:
 		printf("Cylinder node\n");
 		break;
-	case rib::SPHERE:
+	case rib::kSphere:
 		printf("Sphere node\n");
 		break;
-	case rib::DISK:
+	case rib::kDisk:
 		printf("Disk node\n");
 		break;
-	case rib::CONE:
+	case rib::kCone:
 		printf("Cone node\n");
 		break;
-	case rib::PATTERN:
+	case rib::kPattern:
 		printf("Pattern node\n");
 		break;
-	case rib::BXDF:
+	case rib::kBxdf:
 		printf("Bxdf node\n");
 		break;
-	case rib::LIGHT:
+	case rib::kLight:
 		printf("Light node\n");
 		break;
-	case rib::POINTS_GENERAL_POLYGONS:
+	case rib::kPointsGeneralPolygons:
 		printf("Polygons node\n");
 		rib::PointsGeneralPolygonsNode *pnode =
 			(rib::PointsGeneralPolygonsNode *) node;
