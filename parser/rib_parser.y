@@ -60,10 +60,16 @@ https://www.gnu.org/software/bison/manual/html_node/_0025define-Summary.html
 %token PIXEL_SAMPLES
 %token PIXEL_FILTER
 %token SHADING_RATE
+%token HIDER
+%token INTEGRATOR
+%token PIXEL_VARIANCE
+%token EXPOSURE
+%token SCOPED_COORDINATE_SYSTEM
 
 %token TRANSLATE
 %token ROTATE
 %token SCALE
+%token CONCAT_TRANSFORM
 
 %token WORLD_BEGIN
 %token WORLD_END
@@ -74,7 +80,9 @@ https://www.gnu.org/software/bison/manual/html_node/_0025define-Summary.html
 %token TRANSFORM_END
 
 %token LIGHT_SOURCE
+%token AREA_LIGHT_SOURCE
 %token SURFACE
+%token GEOMETRY
 %token COLOR
 %token OPACITY
 
@@ -89,8 +97,8 @@ https://www.gnu.org/software/bison/manual/html_node/_0025define-Summary.html
 %token DISK
 %token CONE
 
-%token CONCAT_TRANSFORM
 %token POINTS_GENERAL_POLYGONS
+%token POINTS_POLYGONS
 %token PATTERN
 %token BXDF
 %token LIGHT
@@ -120,12 +128,19 @@ rib_item
     | format
     | projection
     | option
+    | integrator
+    | hider
     | version
+    | exposure
+    | scoped_coordinate_system
     | pixel_samples
     | pixel_filter
+    | pixel_variance
     | shading_rate
     | light_source
+    | area_light_source
     | surface
+    | geometry
     | color
     | opacity
     | translate
@@ -141,6 +156,7 @@ rib_item
     | attribute
     | contcat_transform
     | points_general_polygons
+    | points_polygons
     | pattern
     | bxdf
     | light
@@ -187,6 +203,20 @@ points_general_polygons
             delete $2;
             delete $3;
             delete $4;
+        }
+    ;
+
+points_polygons
+    : points_polygons STRING float_array
+        {
+            driver.addPPparam($2, *$3);
+            delete $3;
+        }
+    | POINTS_POLYGONS int_array int_array
+        {
+            driver.addPP(*$2, *$3);
+            delete $2;
+            delete $3;
         }
     ;
 
@@ -250,7 +280,7 @@ attribute_end : ATTRIBUTE_END { driver.selectParent(); } ;
 transform_begin : TRANSFORM_BEGIN { driver.addNode(); } ;
 transform_end : TRANSFORM_END { driver.selectParent(); } ;
 
-attribute : ATTRIBUTE STRING STRING string_array { delete $4; };
+
 
 translate
     : TRANSLATE float float float { driver.addTranslate($2, $3, $4); }
@@ -263,6 +293,12 @@ rotate
 scale
     : SCALE float float float { driver.addScale($2, $3, $4); }
     ;
+
+contcat_transform: CONCAT_TRANSFORM float_array
+    {
+        driver.addConcatTransform(*$2);
+        delete $2;
+    } ;
 
 string_array
     : LEFT_SQUARE_BRACKET string_list RIGHT_SQUARE_BRACKET { $$ = $2; }
@@ -297,7 +333,6 @@ int_list
     ;
 
 
-contcat_transform: CONCAT_TRANSFORM float_array { delete $2; } ;
 sides : SIDES INT;
 orientation : ORIENTATION STRING;
 opacity : OPACITY float_array { delete $2; };
@@ -307,19 +342,61 @@ surface
     | surface STRING float
     | SURFACE STRING
     ;
+geometry : GEOMETRY STRING;
+
 light_source
     : light_source STRING float_array { delete $3; }
     | light_source STRING float
     | LIGHT_SOURCE
     ;
-projection : PROJECTION STRING STRING INT ;
-option : OPTION STRING INT ;
+
+option
+    : option STRING float_array { delete $3; }
+    | option STRING float
+    | option INT
+    | OPTION STRING
+    ;
+
+integrator
+    : integrator STRING int_array { delete $3; }
+    | INTEGRATOR STRING STRING
+    ;
+
+hider
+    : hider STRING int_array { delete $3; }
+    | hider STRING string_array { delete $3; }
+    | HIDER STRING
+    ;
+
+projection
+    : projection STRING float_array { delete $3; }
+    | projection STRING INT
+    | PROJECTION STRING
+    ;
+
+attribute
+    : attribute STRING float_array { delete $3; }
+    | attribute STRING string_array { delete $3; }
+    | attribute STRING float
+    | attribute STRING STRING
+    | ATTRIBUTE STRING
+    ;
+
+area_light_source
+    : area_light_source STRING float_array { delete $3; }
+    | area_light_source STRING string_array { delete $3; }
+    | AREA_LIGHT_SOURCE STRING STRING
+    ;
+
 version : VERSION FLOAT ;
 display : DISPLAY STRING STRING STRING ;
-format : FORMAT INT INT INT ;
+format : FORMAT float float float ;
 pixel_samples : PIXEL_SAMPLES INT INT ;
 pixel_filter : PIXEL_FILTER STRING INT INT ;
-shading_rate : SHADING_RATE FLOAT ;
+pixel_variance : PIXEL_VARIANCE FLOAT ;
+shading_rate : SHADING_RATE float ;
+exposure : EXPOSURE FLOAT FLOAT ;
+scoped_coordinate_system : SCOPED_COORDINATE_SYSTEM STRING ;
 
 %%
 

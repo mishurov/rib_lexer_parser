@@ -118,6 +118,13 @@ void Driver::addScale(const float x, const float y, const float z)
 		current->children.push_back(node);
 }
 
+void Driver::addConcatTransform(const std::vector<float> matrix)
+{
+	ConcatTransformNode *node = new ConcatTransformNode(current, matrix);
+	if (current->parent != nullptr)
+		current->children.push_back(node);
+}
+
 void Driver::addHyperboloid(const float x1, const float y1, const float z1,
 			const float x2, const float y2, const float z2,
 			const float thetamax)
@@ -187,6 +194,21 @@ void Driver::addPGPparam(const std::string &key, std::vector<float> value) {
 	if (current->children.back()->type == kPointsGeneralPolygons) {
 		PointsGeneralPolygonsNode *node =
 			(PointsGeneralPolygonsNode *) current->children.back();
+		node->params.insert({key, value});
+	}
+}
+
+void Driver::addPP(std::vector<int> nvertices, std::vector<int> vertices)
+{
+	PointsPolygonsNode *node = 
+		new PointsPolygonsNode(current, nvertices, vertices);
+	current->children.push_back(node);
+}
+
+void Driver::addPPparam(const std::string &key, std::vector<float> value) {
+	if (current->children.back()->type == kPointsPolygons) {
+		PointsPolygonsNode *node =
+			(PointsPolygonsNode *) current->children.back();
 		node->params.insert({key, value});
 	}
 }

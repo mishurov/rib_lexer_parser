@@ -36,6 +36,7 @@ enum NodeType {
 	kTranslate,
 	kRotate,
 	kScale,
+	kConcatTransform,
 	kHyperboloid,
 	kParaboloid,
 	kTorus,
@@ -44,6 +45,7 @@ enum NodeType {
 	kDisk,
 	kCone,
 	kPointsGeneralPolygons,
+	kPointsPolygons,
 	kPattern,
 	kBxdf,
 	kLight
@@ -93,6 +95,15 @@ public:
 	ScaleNode(Node *parent, float x, float y, float z)
 	: Node(parent), x(x), y(y), z(z) { type = kScale; }
 	~ScaleNode() {}
+};
+
+class ConcatTransformNode : public Node {
+public:
+	std::vector<float> matrix;
+public:
+	ConcatTransformNode(Node *parent, std::vector<float> matrix)
+	: Node(parent), matrix(matrix) { type = kConcatTransform; }
+	~ConcatTransformNode() {}
 };
 
 /* quadrics */
@@ -214,6 +225,19 @@ public:
 	~PointsGeneralPolygonsNode() {}
 };
 
+class PointsPolygonsNode : public Node {
+public:
+	std::vector<int> nvertices;
+	std::vector<int> vertices;
+	std::map<std::string,std::vector<float>> params;
+public:
+	PointsPolygonsNode(Node *parent, std::vector<int> nvertices,
+			std::vector<int> vertices)
+	: Node(parent), nvertices(nvertices), vertices(vertices)
+			{ type = kPointsPolygons; }
+	~PointsPolygonsNode() {}
+};
+
 class PatternNode : public Node {
 public:
 	std::string item_type;
@@ -272,6 +296,7 @@ public:
 	void addTranslate(const float x, const float y, const float z);
 	void addRotate(const int r, const int x, const int y, const int z);
 	void addScale(const float x, const float y, const float z);
+	void addConcatTransform(const std::vector<float> matrix);
 	// quadrics
 	void addHyperboloid(const float x1, const float y1, const float z1,
 			const float x2, const float y2, const float z2,
@@ -293,18 +318,21 @@ public:
 	void addPGP(std::vector<int> nloops, std::vector<int> nvertices,
 			std::vector<int> vertices);
 	void addPGPparam(const std::string &key, std::vector<float> value);
+
+	void addPP(std::vector<int> nvertices, std::vector<int> vertices);
+	void addPPparam(const std::string &key, std::vector<float> value);
 	// rendering
 	void addPattern(std::string item_type, std::string name);
 	void addPatternFlParam(const std::string &key,
 						std::vector<float> value);
 	void addPatternStrParam(const std::string &key,
 						std::vector<std::string> value);
-	void addBxdf(std::string type, std::string name);
+	void addBxdf(std::string item_type, std::string name);
 	void addBxdfFlParam(const std::string &key,
 						std::vector<float> value);
 	void addBxdfStrParam(const std::string &key,
 						std::vector<std::string> value);
-	void addLight(std::string type, std::string name);
+	void addLight(std::string item_type, std::string name);
 	void addLightFlParam(const std::string &key,
 						std::vector<float> value);
 	void addLightStrParam(const std::string &key,

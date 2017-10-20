@@ -33,6 +33,9 @@ void dfs(const rib::Node *node) {
 	case rib::kScale:
 		printf("Scale node\n");
 		break;
+	case rib::kConcatTransform:
+		printf("Concat Transform node\n");
+		break;
 	case rib::kHyperboloid:
 		printf("Hyperboloid node\n");
 		break;
@@ -63,8 +66,11 @@ void dfs(const rib::Node *node) {
 	case rib::kLight:
 		printf("Light node\n");
 		break;
+	case rib::kPointsPolygons:
+		printf("Points Polygons node\n");
+		break;
 	case rib::kPointsGeneralPolygons:
-		printf("Polygons node\n");
+		printf("Points General Polygons node\n");
 		rib::PointsGeneralPolygonsNode *pnode =
 			(rib::PointsGeneralPolygonsNode *) node;
 		for(std::vector<int>::iterator

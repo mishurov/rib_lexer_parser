@@ -198,6 +198,20 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 			basis_.addScale(scale, MSpace::kObject);
 		}
 		break;
+	case rib::kConcatTransform:
+		{
+			rib::ConcatTransformNode *n =
+					(rib::ConcatTransformNode *) node;
+			float matrix[4][4] = {
+		{ n->matrix[0],  n->matrix[1],  n->matrix[2],  n->matrix[3]  },
+		{ n->matrix[4],  n->matrix[5],  n->matrix[6],  n->matrix[7]  },
+		{ n->matrix[8],  n->matrix[9],  n->matrix[10], n->matrix[11] },
+		{ n->matrix[12], n->matrix[13], n->matrix[14], n->matrix[15] }
+			};
+			MMatrix transformed(matrix);
+			basis_ = basis_.asMatrix() * transformed;
+		}
+		break;
 	case rib::kSphere:
 		{
 			rib::SphereNode *n = (rib::SphereNode *) node;
@@ -261,6 +275,21 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 				60, 30, n->rmajor, n->rminor,
 				n->phimin, n->phimax, n->thetamax
 			);
+			drawPoints(drawManager, points);
+		}
+		break;
+	case rib::kPointsPolygons:
+		{
+			rib::PointsPolygonsNode *n =
+				(rib::PointsPolygonsNode *) node;
+			MPointArray points;
+			for(int i = 0; i < n->params["P"].size() / 3; i++) {
+				MPoint p;
+			    	p.x = n->params["P"][i * 3];
+			    	p.y = n->params["P"][i * 3 + 1];
+			    	p.z = n->params["P"][i * 3 + 2];
+				points.append(p);
+			}
 			drawPoints(drawManager, points);
 		}
 		break;
