@@ -33,6 +33,7 @@ enum ParseError {
 
 enum NodeType {
 	kJoint,
+	kAttribute,
 	kTranslate,
 	kRotate,
 	kScale,
@@ -238,40 +239,50 @@ public:
 	~PointsPolygonsNode() {}
 };
 
-class PatternNode : public Node {
+class AttributeNode : public Node {
 public:
 	std::string item_type;
 	std::string name;
 	std::map<std::string,std::vector<std::string>> string_params;
 	std::map<std::string,std::vector<float>> float_params;
 public:
-	PatternNode(Node *parent,
+	AttributeNode(Node *parent,
 			std::string item_type,
 			std::string name)
 	: Node(parent), item_type(item_type), name(name)
-			{ type = kPattern; }
-	~PatternNode() {}
+			{ type = kAttribute; }
+	~AttributeNode() {}
 	void addStringParam(const std::string &key,
 					std::vector<std::string> value);
 	void addFloatParam(const std::string &key,std::vector<float> value);
 };
 
-class BxdfNode : public PatternNode {
+class PatternNode : public AttributeNode {
+public:
+	PatternNode(Node *parent,
+			std::string item_type,
+			std::string name)
+	: AttributeNode(parent, item_type, name)
+			{ type = kPattern; }
+	~PatternNode() {}
+};
+
+class BxdfNode : public AttributeNode {
 public:
 	BxdfNode(Node *parent,
 			std::string item_type,
 			std::string name)
-	: PatternNode(parent, item_type, name)
+	: AttributeNode(parent, item_type, name)
 			{ type = kBxdf; }
 	~BxdfNode() {}
 };
 
-class LightNode : public PatternNode {
+class LightNode : public AttributeNode {
 public:
 	LightNode(Node *parent,
 			std::string item_type,
 			std::string name)
-	: PatternNode(parent, item_type, name)
+	: AttributeNode(parent, item_type, name)
 			{ type = kLight; }
 	~LightNode() {}
 };
@@ -322,6 +333,10 @@ public:
 	void addPP(std::vector<int> nvertices, std::vector<int> vertices);
 	void addPPparam(const std::string &key, std::vector<float> value);
 	// rendering
+	void addAttribute(std::string name);
+	void addAttrFlParam(const std::string &key,
+						std::vector<float> value);
+
 	void addPattern(std::string item_type, std::string name);
 	void addPatternFlParam(const std::string &key,
 						std::vector<float> value);

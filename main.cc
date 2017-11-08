@@ -66,6 +66,9 @@ void dfs(const rib::Node *node) {
 	case rib::kLight:
 		printf("Light node\n");
 		break;
+	case rib::kAttribute:
+		printf("Attribute node\n");
+		break;
 	case rib::kPointsPolygons:
 		printf("Points Polygons node\n");
 		break;

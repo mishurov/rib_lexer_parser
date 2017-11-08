@@ -32,7 +32,7 @@ using token = rib::Parser::token;
 %option yyclass="rib::Lexer"
 %option c++
 
-%x SHARP_COMMENT
+%x COMMENT
 
 %%
 
@@ -86,9 +86,9 @@ Bxdf { return(token::BXDF); }
 Light { return(token::LIGHT); }
 
 
-#                   { BEGIN(SHARP_COMMENT); }
-<SHARP_COMMENT>\n   { BEGIN(INITIAL); return(token::COMMENT); }
-<SHARP_COMMENT>.    { }
+#                   { BEGIN(COMMENT); }
+<COMMENT>\n   { BEGIN(INITIAL); }
+<COMMENT>.    { ; }
 
 \[  { return(token::LEFT_SQUARE_BRACKET); }
 

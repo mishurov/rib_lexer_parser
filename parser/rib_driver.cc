@@ -213,12 +213,27 @@ void Driver::addPPparam(const std::string &key, std::vector<float> value) {
 	}
 }
 
-void PatternNode::addStringParam(const std::string &key,
+void AttributeNode::addStringParam(const std::string &key,
 				std::vector<std::string> value) {
 	string_params.insert({key, value});
 }
 
-void PatternNode::addFloatParam(const std::string &key,
+void Driver::addAttribute(std::string name)
+{
+	AttributeNode *node = new AttributeNode(current, "", name);
+	current->children.push_back(node);
+}
+
+void Driver::addAttrFlParam(const std::string &key, std::vector<float> value)
+{
+	if (current->children.back()->type == kAttribute) {
+		AttributeNode *node =
+				(AttributeNode *) current->children.back();
+		node->addFloatParam(key, value);
+	}
+}
+
+void AttributeNode::addFloatParam(const std::string &key,
 				std::vector<float> value) {
 	float_params.insert({key, value});
 }
@@ -237,7 +252,7 @@ void Driver::addBxdf(std::string item_type, std::string name)
 
 void Driver::addLight(std::string item_type, std::string name)
 {
-	PatternNode *node = new LightNode(current, item_type, name);
+	LightNode *node = new LightNode(current, item_type, name);
 	current->children.push_back(node);
 }
 
@@ -269,7 +284,7 @@ void Driver::addBxdfStrParam(const std::string &key,
 void Driver::addBxdfFlParam(const std::string &key,
 				std::vector<float> value) {
 	if (current->children.back()->type == kBxdf) {
-		PatternNode *node = (BxdfNode *) current->children.back();
+		BxdfNode *node = (BxdfNode *) current->children.back();
 		node->addFloatParam(key, value);
 	}
 }

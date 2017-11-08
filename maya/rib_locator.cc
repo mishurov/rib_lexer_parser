@@ -310,6 +310,8 @@ void RibLocatorDrawOverride::processNode(MHWRender::MUIDrawManager& drawManager,
 		break;
 	case rib::kJoint:
 		break;
+	case rib::kAttribute:
+		break;
 	case rib::kPattern:
 		break;
 	case rib::kBxdf:

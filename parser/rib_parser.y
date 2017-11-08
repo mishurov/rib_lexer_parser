@@ -50,7 +50,6 @@ https://www.gnu.org/software/bison/manual/html_node/_0025define-Summary.html
 %token <float> FLOAT
 %token LEFT_SQUARE_BRACKET
 %token RIGHT_SQUARE_BRACKET
-%token COMMENT
 
 %token VERSION
 %token DISPLAY
@@ -115,8 +114,7 @@ https://www.gnu.org/software/bison/manual/html_node/_0025define-Summary.html
 rib : END | rib_item | rib rib_item;
 
 rib_item
-    : COMMENT
-    | world_begin
+    : world_begin
     | world_end
     | attribute_begin
     | attribute_end
@@ -271,6 +269,21 @@ light
         }
     ;
 
+attribute
+    : attribute STRING float_array
+        {
+            driver.addAttrFlParam($2, *$3);
+            delete $3; 
+        }
+    | attribute STRING string_array { delete $3; }
+    | attribute STRING STRING
+    | ATTRIBUTE STRING
+        {
+            driver.addAttribute($2);
+        }
+    ;
+
+
 world_begin : WORLD_BEGIN { driver.addNode(); } ;
 world_end : WORLD_END { driver.selectParent(); } ;
 
@@ -372,14 +385,6 @@ projection
     : projection STRING float_array { delete $3; }
     | projection STRING INT
     | PROJECTION STRING
-    ;
-
-attribute
-    : attribute STRING float_array { delete $3; }
-    | attribute STRING string_array { delete $3; }
-    | attribute STRING float
-    | attribute STRING STRING
-    | ATTRIBUTE STRING
     ;
 
 area_light_source
