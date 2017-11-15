@@ -2,7 +2,7 @@ RIB lexer & parser
 =====
 A lexer and a parser for Pixar RenderMan RIB files made with Flex and Bison. It doesn't cover the whole grammar only some geometry: quadric surfaces and points general polygons. It can be extended but I don't need it right now. I made it as a boilerplate for building custom parsers with Flex and Bison in C++.
 
-![ScreenShot1](http://mishurov.usite.pro/github/rib_lexer_parser/teapot.png)
+![ScreenShot1](http://mishurov.co.uk/images/github/rib_lexer_parser/teapot.png)
 
 ## Info
 Visualisation for the parser is implemented as a Maya locator node and uses Viewport 2.0 API. The quadrics are drawn as point clouds: uniformly sampled points along the parameters of the functions since it's the simplest way to visualise the parsed geometry.
