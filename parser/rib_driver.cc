@@ -29,7 +29,7 @@ Driver::~Driver()
 
 Node Driver::parse(const char * const filename)
 {
-	printf("Starting parsing...\n");
+	printf("Parsing...\n");
 	std::ifstream in_file(filename);
 	if (!in_file.good()) {
 		printf("The file is bad\n");
