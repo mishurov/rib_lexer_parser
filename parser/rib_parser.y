@@ -300,7 +300,7 @@ translate
     ;
 
 rotate
-    : ROTATE INT INT INT INT { driver.addRotate($2, $3, $4, $5); }
+    : ROTATE float float float float { driver.addRotate($2, $3, $4, $5); }
     ;
 
 scale

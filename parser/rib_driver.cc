@@ -104,7 +104,7 @@ void Driver::addTranslate(const float x, const float y, const float z)
 		current->children.push_back(node);
 }
 
-void Driver::addRotate(const int x, const int y, const int z, const int w)
+void Driver::addRotate(const float x, const float y, const float z, const float w)
 {
 	RotateNode *node = new RotateNode(current, x, y, z, w);
 	if (current->parent != nullptr)

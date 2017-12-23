@@ -77,12 +77,12 @@ public:
 
 class RotateNode : public Node {
 public:
-	int r;
-	int x;
-	int y;
-	int z;
+	float r;
+	float x;
+	float y;
+	float z;
 public:
-	RotateNode(Node *parent, int r, int x, int y, int z)
+	RotateNode(Node *parent, float r, float x, float y, float z)
 	: Node(parent), r(r), x(x), y(y), z(z) { type = kRotate; }
 	~RotateNode() {}
 };
@@ -305,7 +305,7 @@ public:
 	void selectParent();
 	// transforms
 	void addTranslate(const float x, const float y, const float z);
-	void addRotate(const int r, const int x, const int y, const int z);
+	void addRotate(const float r, const float x, const float y, const float z);
 	void addScale(const float x, const float y, const float z);
 	void addConcatTransform(const std::vector<float> matrix);
 	// quadrics
